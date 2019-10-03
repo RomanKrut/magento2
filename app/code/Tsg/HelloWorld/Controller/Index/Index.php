@@ -2,15 +2,23 @@
 
 namespace Tsg\HelloWorld\Controller\Index;
 
-use \Magento\Framework\App\Action\Action;
-
-class Index extends Action
+class Index extends \Magento\Framework\App\Action\Action
 {
-    /**
-     * @return void
-     */
-    public function execute(): void
+    protected $_pageFactory;
+
+    public function __construct(
+        \Magento\Framework\App\Action\Context $context,
+        \Magento\Framework\View\Result\PageFactory $pageFactory)
     {
-        echo 'Hello World';
+        $this->_pageFactory = $pageFactory;
+        parent::__construct($context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function execute()
+    {
+        return $this->_pageFactory->create();
     }
 }
