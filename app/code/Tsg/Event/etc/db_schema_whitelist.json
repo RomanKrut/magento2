@@ -1,0 +1,32 @@
+{
+    "tsg_event_entity": {
+        "column": {
+            "entity_id": true,
+            "is_active": true,
+            "status": true,
+            "name": true,
+            "description": true,
+            "short_description": true,
+            "image": true,
+            "create_date": true,
+            "start_datetime": true,
+            "end_datetime": true,
+            "test": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "tsg_event_product_index": {
+        "column": {
+            "id": true,
+            "event_id": true,
+            "product_id": true
+        },
+        "constraint": {
+            "TSG_EVENT_PRODUCT_INDEX_ID": true,
+            "TSG_EVENT_PRODUCT_INDEX_EVENT_ID_TSG_EVENT_ENTITY_ENTITY_ID": true,
+            "TSG_EVENT_PRD_IDX_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true
+        }
+    }
+}

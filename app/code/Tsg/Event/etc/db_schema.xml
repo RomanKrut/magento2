@@ -1,0 +1,43 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="tsg_event_entity">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" identity="true" nullable="false"
+                comment="Entity Id"/>
+        <column xsi:type="boolean" name="is_active" nullable="false" comment="Is event active"/>
+        <column xsi:type="int" name="status" padding="3" nullable="false" comment="Event status"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Event name"/>
+        <column xsi:type="varchar" name="description" nullable="true" length="1024" comment="Event description"/>
+        <column xsi:type="varchar" name="short_description" nullable="true" length="255"
+                comment="Event short description"/>
+        <column xsi:type="varchar" name="image" nullable="true" length="255" comment="Image"/>
+        <column xsi:type="timestamp" name="create_date" default="CURRENT_TIMESTAMP" nullable="false"
+                comment="Event creation date"/>
+        <column xsi:type="datetime" name="start_datetime" nullable="false" comment="Start date time"/>
+        <column xsi:type="datetime" name="end_datetime" nullable="true" comment="End date time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+    <table name="tsg_event_product_index">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" comment="Row id"/>
+        <column xsi:type="int" name="event_id" padding="10" unsigned="true" nullable="false" comment="Event id"/>
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" comment="Product id"/>
+        <constraint xsi:type="unique" referenceId="EVENT_PRODUCT_ROW_ID_INDEX">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="EVENT_ENTITY_ID_FOREIGN_KEY"
+                    table="tsg_event_product_index"
+                    column="event_id"
+                    referenceTable="tsg_event_entity"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign"
+                    referenceId="EVENT_PRODUCT_ID_FOREIGN_KEY"
+                    table="tsg_event_product_index"
+                    column="product_id"
+                    referenceTable="catalog_product_entity"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+    </table>
+</schema>

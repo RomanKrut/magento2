@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Tsg_Event::event_container" title="Events" translate="title" module="Tsg_Event" parent="Magento_Catalog::catalog" sortOrder="50" dependsOnModule="Tsg_Event" resource="Tsg_Event::event_container"/>
+        <add id="Tsg_Event::event" title="Event" translate="title" module="Tsg_Event" parent="Tsg_Event::event_container" sortOrder="10" dependsOnModule="Tsg_Event" action="event/event/index" resource="Tsg_Event::event"/>
+    </menu>
+</config>

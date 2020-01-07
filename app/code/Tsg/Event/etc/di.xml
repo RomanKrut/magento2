@@ -1,0 +1,19 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="event_listing_grid_data_source" xsi:type="string">Tsg\Event\Model\ResourceModel\Event\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Tsg\Event\Model\ResourceModel\Event\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="tsg_event_entity" xsi:type="string">event_event_index</argument>
+            <argument name="resourceModel" xsi:type="string">Tsg\Event\Model\ResourceModel\Event</argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Tsg\Event\Api\Data\EventSearchResultInterface" type="Tsg\Event\Model\EventSearchResult"/>
+    <preference for="Tsg\Event\Api\EventRepositoryInterface" type="Tsg\Event\Model\EventRepository"/>
+    <preference for="Tsg\Event\Api\Data\EventInterface" type="Tsg\Event\Model\Event"/>
+</config>
