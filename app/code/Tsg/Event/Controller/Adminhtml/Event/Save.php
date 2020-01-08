@@ -10,10 +10,11 @@ class Save extends \Magento\Backend\App\Action implements HttpPostActionInterfac
 {
     public function execute()
     {
+        $redirect = $this->resultRedirectFactory->create();
         $params = $this->getRequest()->getParams();
-        // first_fieldset then set data to event object then save
-        if ($params && array_key_exists('first_fieldset', $params)) {
-            $firstSet = $params['first_fieldset'];
+
+        if ($params && array_key_exists('main_event_data', $params)) {
+            $firstSet = $params['main_event_data'];
             /** @var Event $event */
             $event = $this->_objectManager->create(Event::class);
             $event->setName($firstSet['name']);
@@ -23,7 +24,24 @@ class Save extends \Magento\Backend\App\Action implements HttpPostActionInterfac
 
             /** @var EventRepository $eventRepo */
             $eventRepo = $this->_objectManager->create(EventRepository::class);
-            $eventRepo->save($event);
+            try {
+                $eventRepo->save($event);
+                $this->messageManager->addSuccessMessage('Event successfully saved');
+                $eventId = $event->getId();
+                if ($eventId && $this->getRequest()->getParam('back', false) === 'edit') {
+                    $redirect->setPath(
+                        '*/*/edit',
+                        ['id' => $eventId->getEntityId(), 'back' => null, '_current' => true]
+                    );
+                } else {
+                    $redirect->setPath('*/*/index');
+                }
+            } catch (\Exception $exception) {
+                $this->messageManager->addErrorMessage('Event was not saved');
+                $redirect->setPath('*/*/newEvent');
+            }
         }
+
+        return $redirect;
     }
 }
