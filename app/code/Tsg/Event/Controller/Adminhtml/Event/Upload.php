@@ -2,28 +2,26 @@
 
 namespace Tsg\Event\Controller\Adminhtml\Event;
 
-use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\App\Filesystem\DirectoryList;
 
-class Upload extends \Magento\Backend\App\Action {
+class Upload extends \Magento\Backend\App\Action
+{
     /**
-     * Image uploader
-     *
-     * @var \Magento\Catalog\Model\ImageUploader
+     * @var \Magento\Framework\Controller\Result\RawFactory
      */
-    protected $imageUploader;
+    protected $resultRawFactory;
 
     /**
-     * Upload constructor.
-     *
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Catalog\Model\ImageUploader $imageUploader
+     * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Catalog\Model\ImageUploader $imageUploader
-    ) {
+        \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
+    )
+    {
         parent::__construct($context);
-        $this->imageUploader = $imageUploader;
+        $this->resultRawFactory = $resultRawFactory;
     }
 
     /**
@@ -31,21 +29,40 @@ class Upload extends \Magento\Backend\App\Action {
      *
      * @return \Magento\Framework\Controller\ResultInterface
      */
-    public function execute() {
+    public function execute()
+    {
         $imageUploadId = $this->_request->getParam('param_name', null);
         try {
-            $imageResult = $this->imageUploader->saveFileToTmpDir($imageUploadId);
+            /** @var \Magento\MediaStorage\Model\File\Uploader $uploader */
+            $uploader = $this->_objectManager->create(
+                \Magento\MediaStorage\Model\File\Uploader::class,
+                ['fileId' => $imageUploadId]
+            );
+            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
+            /** @var \Magento\Framework\Image\Adapter\AdapterInterface $imageAdapter */
+            $imageAdapter = $this->_objectManager->get(\Magento\Framework\Image\AdapterFactory::class)->create();
+            $uploader->addValidateCallback('event_event_image', $imageAdapter, 'validateUploadFile');
+            $uploader->setAllowRenameFiles(true);
+            $uploader->setFilesDispersion(true);
+            /** @var \Magento\Framework\Filesystem\Directory\Read $mediaDirectory */
+            $mediaDirectory = $this->_objectManager
+                ->get(\Magento\Framework\Filesystem::class)
+                ->getDirectoryRead(DirectoryList::MEDIA);
+            /** @var \Tsg\Event\Model\Config\Media\Image $config */
+            $config = $this->_objectManager->get(\Tsg\Event\Model\Config\Media\Image::class);
+            $result = $uploader->save($mediaDirectory->getAbsolutePath($config->getTmpEventMediaPath()));
 
-            $imageResult['cookie'] = [
-                'name' => $this->_getSession()->getName(),
-                'value' => $this->_getSession()->getSessionId(),
-                'lifetime' => $this->_getSession()->getCookieLifetime(),
-                'path' => $this->_getSession()->getCookiePath(),
-                'domain' => $this->_getSession()->getCookieDomain(),
-            ];
-        } catch (\Exception $e) {
-            $imageResult = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
+            unset($result['path']);
+            $fileName = $result['file'];
+            $result['url'] = $config ->getTmpEventMediaUrl($fileName);
+        } catch (\Exception $exception) {
+            $result = ['error' => $exception->getMessage(), 'errorcode' => $exception->getCode()];
         }
-        return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData($imageResult);
+        /** @var \Magento\Framework\Controller\Result\Raw $response */
+        $response = $this->resultRawFactory->create();
+        $response->setHeader('Content-type', 'text/plain');
+        $response->setContents(json_encode($result));
+
+        return $response;
     }
 }

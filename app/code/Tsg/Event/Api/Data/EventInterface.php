@@ -48,4 +48,14 @@ interface EventInterface
      */
     public function setShortDescription($shortDescription);
 
+    /**
+     * @return string
+     */
+    public function getImage();
+
+    /**
+     * @param string $image
+     * @return void
+     */
+    public function setImage($image);
 }

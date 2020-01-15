@@ -133,5 +133,10 @@
                 <label translate="true">Event Status</label>
             </settings>
         </column>
+        <actionsColumn name="action" class="Tsg\Event\Ui\Component\Listing\Column\EventActions" sortOrder="10">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
     </columns>
 </listing>

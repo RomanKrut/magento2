@@ -15,6 +15,8 @@ class Event extends AbstractExtensibleModel implements EventInterface
 
     private const SHORT_DESCRIPTION = 'short_description';
 
+    private const IMAGE = 'image';
+
     protected function _construct()
     {
         parent::_construct();
@@ -62,5 +64,15 @@ class Event extends AbstractExtensibleModel implements EventInterface
     public function setShortDescription($shortDescription)
     {
         $this->setData(self::SHORT_DESCRIPTION, $shortDescription);
+    }
+
+    public function getImage()
+    {
+        return $this->getData(self::IMAGE);
+    }
+
+    public function setImage($image)
+    {
+        $this->setData(self::IMAGE, $image);
     }
 }
