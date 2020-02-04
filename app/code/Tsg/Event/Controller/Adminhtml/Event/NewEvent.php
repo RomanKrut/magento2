@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tsg\Event\Controller\Adminhtml\Event;
-
 
 class NewEvent extends \Magento\Backend\App\Action
 {

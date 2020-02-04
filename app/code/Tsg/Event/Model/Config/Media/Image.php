@@ -79,6 +79,15 @@ class Image
     }
 
     /**
+     * @param $fileName
+     * @return string
+     */
+    public function getFilePathWithEventDir($fileName): string
+    {
+        return self::EVENT_MEDIA_DIR . '/' . $fileName;
+    }
+
+    /**
      * Process file path.
      *
      * @param string $file

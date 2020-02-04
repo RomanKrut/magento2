@@ -9,7 +9,6 @@ interface EventRepositoryInterface
 {
     /**
      * @param int $id
-     * @return self
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getById($id);

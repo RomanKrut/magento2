@@ -37,7 +37,7 @@ class Generic
     {
         try {
             return $this->eventRepository->getById(
-                $this->context->getRequest()->getParam('entity_id')
+                $this->context->getRequest()->getParam('id')
             )->getId();
         } catch (NoSuchEntityException $e) {
             return null;

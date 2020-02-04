@@ -46,6 +46,11 @@ class EventRepository implements EventRepositoryInterface
         $this->eventResource = $eventResource;
     }
 
+    /**
+     * @param int $id
+     * @return EventInterface
+     * @throws NoSuchEntityException
+     */
     public function getById($id)
     {
         $event = $this->eventFactory->create();
