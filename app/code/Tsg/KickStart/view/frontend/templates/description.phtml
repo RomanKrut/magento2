@@ -1,0 +1,7 @@
+<?php
+/** @var \Magento\Framework\View\Element\AbstractBlock $block */
+/** @var Tsg\KickStart\ViewModel\Description $viewDescriptionModel*/
+$viewDescriptionModel = $block->getData('description_view_model');
+?>
+<p><?= $viewDescriptionModel->getWordsCount() ?></p>
+<?= $block->getChildHtml() ?>

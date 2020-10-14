@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<page layout="2columns-right" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument name="pageTitle" translate="true" xsi:type="string">Best selling</argument>
+            </action>
+            <arguments>
+                <argument name="css_class" xsi:type="string">cms-content-important</argument>
+            </arguments>
+
+        </referenceBlock>
+        <referenceContainer name="content">
+            <container htmlTag="div" htmlId="description-container">
+                <block name="bestselling.description" template="Tsg_KickStart::description.phtml">
+                    <arguments>
+                        <argument name="description_view_model" xsi:type="object">Tsg\KickStart\ViewModel\Description</argument>
+                    </arguments>
+                    <block name="bestselling.description-extra1" template="Tsg_KickStart::description/extra.phtml"/>
+                    <block name="bestselling.description-extra2" template="Tsg_KickStart::description/extra.phtml"/>
+                    <block name="bestselling.description-extra3" template="Tsg_KickStart::description/extra.phtml"/>
+                </block>
+            </container>
+        </referenceContainer>
+        <move element="wishlist_sidebar" destination="sidebar.additional" before="-"/>
+        <referenceContainer name="catalog.compare.sidebar" remove="true" />
+        <referenceBlock name="wishlist_sidebar" template="Tsg_KickStart::wishlist/sidebar.phtml"/>
+    </body>
+</page>

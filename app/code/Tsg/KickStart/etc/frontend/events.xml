@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_views_bestselling_me_index">
+        <observer name="tracl_customer_views_bestselling_me_index" instance="Tsg\KickStart\Observer\TrackCustomerViewsBestsellingMeIndex" />
+    </event>
+</config>
